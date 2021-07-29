@@ -1,0 +1,66 @@
+@startuml
+
+abstract Cidadão{
+    nome
+    nacionalidade
+
+    passaporte
+    carteira_vacinação
+}
+
+class CidadãoNatural{
+    ID_card
+}
+
+class CidadãoEstrangeiro{
+    garantia_de_asilo
+    autorização_diplomática
+    permissão_de_acesso
+    visto_de_rabalho
+}
+
+class Passaporte{
+    identificador
+    validade
+}
+
+object Boletim
+
+class Inspetor{
+    cidadão
+    boletim
+    regras
+    inspeção
+    recebe_boletim()
+    inspecionar()
+}
+
+class Regra
+
+class RegraPassaporte
+class RegraCriminal
+class RegraVacinal
+class RegraEstrangeiro
+
+class CarteiraVacinação{
+    vacinas
+}
+
+Cidadão <|-- CidadãoEstrangeiro
+Cidadão <|-- CidadãoNatural
+
+Regra <|-- RegraPassaporte
+Regra <|-- RegraCriminal
+Regra <|-- RegraVacinal
+Regra <|-- RegraEstrangeiro
+
+Regra <- Inspetor
+
+Inspetor --> Boletim
+Inspetor --> Cidadão
+
+Cidadão --> Passaporte
+Cidadão --> CarteiraVacinação
+
+
+@enduml

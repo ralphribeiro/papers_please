@@ -1,0 +1,26 @@
+- recebe papéis
+    - verifica se não é um criminoso procurado
+        detenção como criminoso
+    - verifica o certificado de vacinação
+        lista de vacinas requeridas    
+    - verifica o número do passaporte
+    - verifica se a validade é inferior à 22/11/82
+    - verifica se é ou nativo ou estrangeiro    
+        - apresenta todos documentos    
+        - verifica informações conflitantes
+            tetenção com lista de informações incompatíveis
+        - se nativo
+            então apresente o ID_card
+            - se sucesso
+                Glory to Arstrotska
+            - senão
+                lista de motivos da recusa (pelo menos um)
+        - senão
+            nacionalidade (lista das 7 permitidas)
+            garantia de asilo *
+            autorização diplomática *
+            permisão de acesso
+            visto de trabalho
+                propósito do trabalho
+            se sucesso
+                Cause no trouble

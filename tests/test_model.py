@@ -61,14 +61,17 @@ from src.app.model import Bulletin, regulations
 
 
 class TestRegulations:
+    @pytest.mark.skip('testing')
     def test_regulation_for_citizens_of_nation(self):
         regulation = 'Allow citizens of Obristan'
         assert regulations(regulation) == {'Allow': ('Obristan', )}
 
+    @pytest.mark.skip('testing')
     def test_regulation_for_citizens_of_nations(self):
         regulation = 'Deny citizens of Kolechia, Republia'
         assert regulations(regulation) == {'Deny': ('Kolechia', 'Republia')}
 
+    @pytest.mark.skip('testing')
     def test_more_than_regulation_for_citizens_of_nations(self):
         regulation = '''Deny citizens of Kolechia, Republia
         Allow citizens of Obristan'''
@@ -78,31 +81,36 @@ class TestRegulations:
             'Allow': ('Obristan', )
         }
 
+    @pytest.mark.skip('testing')
     def test_documents_regulations_foreigners_require_access_permit(self):
         regulation = 'Foreigners require access permit'
         assert regulations(regulation) == {
             'Foreigners': ('require', 'access', 'permit', )
         }
 
+    @pytest.mark.skip('testing')
     def test_documents_regulations_aztrotzca_citizen_require_id_card(self):
         regulation = 'Citizens of Arstotzka require ID card'
         assert regulations(regulation) == {
             'Citizens': ('Arstotzka', 'require', 'ID card')
         }
 
+    @pytest.mark.skip('testing')
     def test_documents_regulations_workers_require_work_pass(self):
         regulation = 'Workers require work pass'
         assert regulations(regulation) == {
             'Workers': ('require', 'work', 'pass')
         }
 
-    def test_vaccination_regulations_citzens_require_polio(self):        
+    def test_vaccination_regulations_citzens_require_polio(self):
         regulation = 'Citizens of Antegria, Republia, Obristan require polio vaccination'
         assert regulations(regulation) == {
             'vaccination': ('Antegria', 'Republia', 'Obristan', 'polio')
         }
 
         # example 2: Entrants no longer require tetanus vaccination
+
+
 
 
 @pytest.mark.skip('not implemented')

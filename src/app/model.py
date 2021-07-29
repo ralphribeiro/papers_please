@@ -1,3 +1,4 @@
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from functools import partial
@@ -5,6 +6,9 @@ from itertools import chain
 import re
 from typing import Iterable
 
+
+def parse_string(str):
+    """Parse  """
 
 @dataclass()
 class Bulletin:
@@ -93,6 +97,6 @@ def regulations(regulation: str) -> dict:
     fns = (partial(fn, countries) for fn in regulations_funcs)
 
     for fn in fns:
-        regulations.update(fn(regulation))
+        regulations.update(fn(regulation))        
 
     return regulations
