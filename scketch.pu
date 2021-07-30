@@ -32,15 +32,36 @@ class Inspetor{
     regras
     inspeção
     recebe_boletim()
-    inspecionar()
+    carrega_regras(boletim)
+    inspecionar(cidadão)
+    processa(cidadão, regra)
+
 }
 
-class Regra
+class Regra{
+    países
+}
 
-class RegraPassaporte
-class RegraCriminal
-class RegraVacinal
-class RegraEstrangeiro
+
+class RegraPassaporte{
+    ID    
+}
+class RegraCriminal{
+    nome_procurado
+}
+class RegraVacinal{
+    vacinas
+}
+class RegraEstrangeiro{
+    garantia de asilo *
+    autorização diplomática *
+    permisão de acesso
+    visto de trabalho
+    propósito do trabalho
+}
+class RegraNatural{
+    ID_card
+}
 
 class CarteiraVacinação{
     vacinas
@@ -53,10 +74,11 @@ Regra <|-- RegraPassaporte
 Regra <|-- RegraCriminal
 Regra <|-- RegraVacinal
 Regra <|-- RegraEstrangeiro
+Regra <|-- RegraNatural
 
 Regra <- Inspetor
 
-Inspetor --> Boletim
+Inspetor -> Boletim
 Inspetor --> Cidadão
 
 Cidadão --> Passaporte
