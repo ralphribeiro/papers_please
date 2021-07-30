@@ -38,19 +38,23 @@ class Inspetor{
 
 }
 
-class Regra{
+abstract Regra{    
     países
+    executa(cidadão: Cidadão)
 }
 
 
 class RegraPassaporte{
-    ID    
+    ID
+    executa()
 }
 class RegraCriminal{
     nome_procurado
+    executa()
 }
 class RegraVacinal{
     vacinas
+    executa()
 }
 class RegraEstrangeiro{
     garantia de asilo *
@@ -58,9 +62,11 @@ class RegraEstrangeiro{
     permisão de acesso
     visto de trabalho
     propósito do trabalho
+    executa()
 }
 class RegraNatural{
     ID_card
+    executa()
 }
 
 class CarteiraVacinação{
@@ -70,16 +76,24 @@ class CarteiraVacinação{
 Cidadão <|-- CidadãoEstrangeiro
 Cidadão <|-- CidadãoNatural
 
-Regra <|-- RegraPassaporte
-Regra <|-- RegraCriminal
-Regra <|-- RegraVacinal
-Regra <|-- RegraEstrangeiro
-Regra <|-- RegraNatural
+Regra ..> Cidadão
+
+Regra <|--- RegraPassaporte
+Regra <|--- RegraCriminal
+Regra <|--- RegraVacinal
+Regra <|--- RegraEstrangeiro
+Regra <|--- RegraNatural
 
 Regra <- Inspetor
 
 Inspetor -> Boletim
 Inspetor --> Cidadão
+
+Inspetor .> RegraPassaporte
+Inspetor .> RegraCriminal
+Inspetor .> RegraVacinal
+Inspetor .> RegraEstrangeiro
+Inspetor .> RegraNatural
 
 Cidadão --> Passaporte
 Cidadão --> CarteiraVacinação
