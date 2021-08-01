@@ -6,6 +6,8 @@ abstract Cidadão{
 
     passaporte
     carteira_vacinação
+
+    otem_documentação()
 }
 
 class CidadãoNatural{
@@ -30,15 +32,12 @@ class Inspetor{
     cidadão
     boletim
     regras
-    inspeção
     recebe_boletim()
-    carrega_regras(boletim)
     inspecionar(cidadão)
-    processa(cidadão, regra)
-
 }
 
-abstract Regra{    
+abstract Regra{
+
     países
     executa(cidadão: Cidadão)
 }
@@ -73,8 +72,8 @@ class CarteiraVacinação{
     vacinas
 }
 
-Cidadão <|-- CidadãoEstrangeiro
-Cidadão <|-- CidadãoNatural
+Cidadão <|- CidadãoEstrangeiro
+Cidadão <|- CidadãoNatural
 
 Regra ..> Cidadão
 
@@ -89,14 +88,8 @@ Regra <- Inspetor
 Inspetor -> Boletim
 Inspetor --> Cidadão
 
-Inspetor .> RegraPassaporte
-Inspetor .> RegraCriminal
-Inspetor .> RegraVacinal
-Inspetor .> RegraEstrangeiro
-Inspetor .> RegraNatural
-
-Cidadão --> Passaporte
-Cidadão --> CarteiraVacinação
+Cidadão ---> Passaporte
+Cidadão ---> CarteiraVacinação
 
 
 @enduml
