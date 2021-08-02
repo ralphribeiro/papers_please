@@ -1,43 +1,22 @@
 @startuml
 
-abstract Cidadão{
-    nome
-    nacionalidade
-
-    passaporte
-    carteira_vacinação
-
-    otem_documentação()
+class Cidadão{
+    documentos
 }
 
-class CidadãoNatural{
-    ID_card
+class Boletim{
+    descrição
+    data
 }
-
-class CidadãoEstrangeiro{
-    garantia_de_asilo
-    autorização_diplomática
-    permissão_de_acesso
-    visto_de_rabalho
-}
-
-class Passaporte{
-    identificador
-    validade
-}
-
-object Boletim
 
 class Inspetor{
-    cidadão
-    boletim
+    boletins
     regras
-    recebe_boletim()
+    recebe_boletim(boletim)
     inspecionar(cidadão)
 }
 
 abstract Regra{
-
     países
     executa(cidadão: Cidadão)
 }
@@ -68,13 +47,6 @@ class RegraNatural{
     executa()
 }
 
-class CarteiraVacinação{
-    vacinas
-}
-
-Cidadão <|- CidadãoEstrangeiro
-Cidadão <|- CidadãoNatural
-
 Regra ..> Cidadão
 
 Regra <|--- RegraPassaporte
@@ -87,9 +59,5 @@ Regra <- Inspetor
 
 Inspetor -> Boletim
 Inspetor --> Cidadão
-
-Cidadão ---> Passaporte
-Cidadão ---> CarteiraVacinação
-
 
 @enduml
