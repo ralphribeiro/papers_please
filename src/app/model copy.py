@@ -16,13 +16,7 @@ class CarteiraVacinação:
 
 @dataclass
 class Cidadão:
-    nome: str
-    nacionalidade: str
-
-    passaporte: Passaporte
-    carteira_vacinação: CarteiraVacinação
-
-    id_card: str
+    descrição: str
 
 
 @dataclass

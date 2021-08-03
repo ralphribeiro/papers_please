@@ -17,23 +17,28 @@ class Inspetor{
 }
 
 abstract Regra{
-    países
-    executa(cidadão: Cidadão)
+    executa(boletim: Boletim, cidadão: Cidadão)
 }
 
+abstract RegraNação{
+    países
+}
 
 class RegraPassaporte{
     ID
     executa()
 }
+
 class RegraCriminal{
     nome_procurado
     executa()
 }
+
 class RegraVacinal{
     vacinas
     executa()
 }
+
 class RegraEstrangeiro{
     garantia de asilo *
     autorização diplomática *
@@ -42,18 +47,21 @@ class RegraEstrangeiro{
     propósito do trabalho
     executa()
 }
+
 class RegraNatural{
     ID_card
     executa()
 }
 
 Regra ..> Cidadão
+Regra ..> Boletim
 
-Regra <|--- RegraPassaporte
+Regra <|-- RegraNação
 Regra <|--- RegraCriminal
+Regra <|--- RegraPassaporte
 Regra <|--- RegraVacinal
-Regra <|--- RegraEstrangeiro
-Regra <|--- RegraNatural
+RegraNação <|-- RegraNatural
+RegraNação <|-- RegraEstrangeiro
 
 Regra <- Inspetor
 
