@@ -1,7 +1,7 @@
 @startuml
 
 class Cidadão{
-    documentos
+    papeis
 }
 
 class Boletim{
@@ -10,14 +10,13 @@ class Boletim{
 }
 
 class Inspetor{
-    boletins
-    regras
-    recebe_boletim(boletim)
-    inspecionar(cidadão)
+    regras: list[Regra]
+    recebe_boletim(boletim_ministerial: str)
+    inspecionar(entrante: str)
 }
 
 abstract Regra{
-    executa(boletim: Boletim, cidadão: Cidadão)
+    executa(boletim: Boletim)
 }
 
 abstract RegraNação{
@@ -53,8 +52,48 @@ class RegraNatural{
     executa()
 }
 
-Regra ..> Cidadão
-Regra ..> Boletim
+abstract Papel{
+    raw: str
+}
+
+class Passaporte{
+    __call__()
+}
+
+class CertificadoVacinação{
+    __call__()
+}
+
+class IDCard{
+    __call__()
+}
+
+class PermissãoAcesso{
+    __call__()
+}
+
+class PermissãoTrabalho{
+    __call__()
+}
+
+class GarantiaAsilo{
+    __call__()
+}    
+
+class AutorizaçãoDiplomática{
+    __call__()
+}
+
+
+Papel <|- Passaporte
+Papel <|--- CertificadoVacinação
+Papel <|-- IDCard
+Papel <|--- PermissãoAcesso
+Papel <|-- PermissãoTrabalho
+Papel <|--- GarantiaAsilo
+Papel <|-- AutorizaçãoDiplomática
+
+Cidadão --> Papel
 
 Regra <|-- RegraNação
 Regra <|--- RegraCriminal
@@ -63,9 +102,9 @@ Regra <|--- RegraVacinal
 RegraNação <|-- RegraNatural
 RegraNação <|-- RegraEstrangeiro
 
-Regra <- Inspetor
-
-Inspetor -> Boletim
+Inspetor ---> Regra
+Inspetor --> Boletim
 Inspetor --> Cidadão
+
 
 @enduml
