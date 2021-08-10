@@ -1,0 +1,48 @@
+@startuml
+
+class Entrante{
+    def __init__(self, papeis, regra)
+    def executa_regra(self)
+}
+
+abstract Regra{
+    executa(entrante)
+
+}
+
+class Papel{
+    nome: str
+    items: dict
+}
+
+class RegraPassaporte{
+    executa(entrante)
+}
+class RegraPermissãoAcesso{
+    executa(entrante)
+}
+class RegraGarantiaAsilo{
+    executa(entrante)
+}
+
+class Boletim{
+    raw: str
+    dt: data
+}
+
+class Inspetor{
+    boletins: list[Boletim]
+    recebe_boletim(boletim)
+    inspeciona(entrante_raw)
+}
+
+Inspetor --> Entrante
+Inspetor --> Regra
+Inspetor --> Boletim
+
+Entrante o-> Regra
+Entrante o--> Papel
+Regra <|-- RegraPassaporte
+Regra <|-- RegraPermissãoAcesso
+Regra <|-- RegraGarantiaAsilo
+@enduml

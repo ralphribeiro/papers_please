@@ -2,54 +2,52 @@
 
 class Cidadão{
     papeis
+    status: str 
 }
 
 class Boletim{
     descrição
     data
+    regras
 }
 
 class Inspetor{
-    regras: list[Regra]
-    recebe_boletim(boletim_ministerial: str)
+    boletins: list[Boletim]
+    cidadão: Cidadão
+    recebe_boletim(boletim_raw: str)
     inspecionar(entrante: str)
 }
 
 abstract Regra{
-    executa(boletim: Boletim)
+    executar(papel)
 }
 
-abstract RegraNação{
-    países
+class RegraConsistênciaDocumentos{
+    executar(papel)
 }
-
+class RegraNativo{
+    executar(papel)
+}
 class RegraPassaporte{
-    ID
-    executa()
+    executar(papel)
 }
-
-class RegraCriminal{
-    nome_procurado
-    executa()
+class RegraIdCard{
+    executar(papel)
 }
-
-class RegraVacinal{
-    vacinas
-    executa()
+class RegraVacinas{
+    executar(papel)
 }
-
-class RegraEstrangeiro{
-    garantia de asilo *
-    autorização diplomática *
-    permisão de acesso
-    visto de trabalho
-    propósito do trabalho
-    executa()
+class RegraPermissãoAcesso{
+    executar(papel)
 }
-
-class RegraNatural{
-    ID_card
-    executa()
+class RegraGarantiaAsilo{
+    executar(papel)
+}
+class RegraPermissãoTrabalho{
+    executar(papel)
+}
+class RegraAutorizaçãoAutomática{
+    executar(papel)
 }
 
 abstract Papel{
@@ -84,8 +82,17 @@ class AutorizaçãoDiplomática{
     __call__()
 }
 
+Regra <|--- RegraConsistênciaDocumentos
+Regra <|--- RegraNativo
+Regra <|-- RegraPassaporte
+Regra <|--- RegraIdCard
+Regra <|-- RegraVacinas
+Regra <|--- RegraPermissãoAcesso
+Regra <|-- RegraGarantiaAsilo
+Regra <|--- RegraPermissãoTrabalho
+Regra <|-- RegraAutorizaçãoAutomática
 
-Papel <|- Passaporte
+Papel <|-- Passaporte
 Papel <|--- CertificadoVacinação
 Papel <|-- IDCard
 Papel <|--- PermissãoAcesso
@@ -93,18 +100,11 @@ Papel <|-- PermissãoTrabalho
 Papel <|--- GarantiaAsilo
 Papel <|-- AutorizaçãoDiplomática
 
-Cidadão --> Papel
+Cidadão "1" *---> "n" Papel
+Boletim "1" *---> "n" Regra
 
-Regra <|-- RegraNação
-Regra <|--- RegraCriminal
-Regra <|--- RegraPassaporte
-Regra <|--- RegraVacinal
-RegraNação <|-- RegraNatural
-RegraNação <|-- RegraEstrangeiro
 
-Inspetor ---> Regra
-Inspetor --> Boletim
-Inspetor --> Cidadão
-
+Inspetor "1" o--> "n" Boletim
+Inspetor "1" o--> "1" Cidadão
 
 @enduml
