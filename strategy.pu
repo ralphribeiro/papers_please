@@ -28,7 +28,16 @@ class RegraGarantiaAsilo{
 class Boletim{
     raw: str
     dt: data
+    atualizações: list[Atualização]
 }
+
+abstract Atualização
+class AtualizaçãoNações
+class AtualizaçãoDocumentos
+class AtualizaçãoVacinação
+class AtualizaçãoCriminal
+
+
 
 class Inspetor{
     boletins: list[Boletim]
@@ -39,10 +48,18 @@ class Inspetor{
 Inspetor --> Entrante
 Inspetor --> Regra
 Inspetor --> Boletim
+Inspetor --> Atualização
 
 Entrante o-> Regra
 Entrante o--> Papel
 Regra <|-- RegraPassaporte
 Regra <|-- RegraPermissãoAcesso
 Regra <|-- RegraGarantiaAsilo
+
+Atualização <|--- AtualizaçãoNações
+Atualização <|--- AtualizaçãoDocumentos
+Atualização <|--- AtualizaçãoVacinação
+Atualização <|--- AtualizaçãoCriminal
+
+Boletim -> Atualização
 @enduml

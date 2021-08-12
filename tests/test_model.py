@@ -57,7 +57,7 @@ These properties may include the following:
 
 import pytest
 
-from src.app.model import Bulletin, regulations
+from src.app.model_old import Bulletin, regulations
 
 
 class TestRegulations:
