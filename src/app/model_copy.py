@@ -17,7 +17,7 @@ class Papel:
             if '#' in chave:
                 chave = chave.removesuffix('#')
             atributos[chave.lower()] = valor.strip()
-        self.nome = ch
+        self.nome = ch.lower()
         self.itens = atributos
 
     def __post_init__(self):
@@ -61,3 +61,28 @@ def regra_valida_data(entrante: Entrante):
         validade = date.fromisoformat('1982-11-22')
         if validade_papel < validade:
             entrante.status.append(f'Entry denied: {papel.nome} expired.')
+
+
+def regra_passaporte_obrigatório(entrante: Entrante):
+    if 'passport' not in [p.nome for p in entrante.papeis]:
+        entrante.status.append('Entry denied: missing required passport.')
+
+
+def regra_id_card_obrigatório(entrante: Entrante):
+    if 'id_card' not in [p.nome for p in entrante.papeis]:
+        entrante.status.append('Entry denied: missing required ID card.')
+
+
+def regra_vacinação_obrigatória(vacinas_exigidas: dict, entrante: Entrante):
+    nação = ''
+    vacinas_tomadas = ''
+    for p in entrante.papeis:
+        if p.nome == 'passport':
+            nação = p.itens['nation']
+        if p.nome == 'certificate_of_vaccination':
+            vacinas_tomadas = p.itens['vaccines']
+
+    for v in vacinas_exigidas[nação]:
+        if v not in vacinas_tomadas:
+            s = 'Entry denied: missing required {} vaccination.'
+            entrante.status.append(s.format(v))

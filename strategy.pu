@@ -1,28 +1,17 @@
 @startuml
 
 class Entrante{
-    def __init__(self, papeis, regra)
+    def __init__(self, papeis, regras)
     def executa_regra(self)
-}
-
-abstract Regra{
-    executa(entrante)
-
+    constrói_papeis()
+    submete_papeis_regras()
 }
 
 class Papel{
+    raw: dict
     nome: str
-    items: dict
-}
-
-class RegraPassaporte{
-    executa(entrante)
-}
-class RegraPermissãoAcesso{
-    executa(entrante)
-}
-class RegraGarantiaAsilo{
-    executa(entrante)
+    itens: dict
+    _sanitiza(self)
 }
 
 class Boletim{
@@ -31,35 +20,64 @@ class Boletim{
     atualizações: list[Atualização]
 }
 
-abstract Atualização
-class AtualizaçãoNações
-class AtualizaçãoDocumentos
-class AtualizaçãoVacinação
-class AtualizaçãoCriminal
-
-
-
 class Inspetor{
     boletins: list[Boletim]
     recebe_boletim(boletim)
     inspeciona(entrante_raw)
 }
 
+object regra
+object regra_consistência_documentos
+object regra_valida_data
+object regra_passaporte
+object regra_id_card
+object regra_permissão_de_acesso{
+    atualização_documentos
+}
+object regra_visto_trabalho{
+    atualização_documentos
+}
+object regra_autorização_diplomática{
+    atualização_documentos
+}
+object regra_criminal{
+    atualização_criminal
+}
+object regra_vacinação{
+    atualização_vacinação
+}
+object regra_nações{
+    atualização_nações
+}
+
+abstract Atualização
+class AtualizaçãoNações
+class AtualizaçãoDocumentos
+class AtualizaçãoVacinação
+class AtualizaçãoCriminal
+
+regra <--- regra_consistência_documentos
+regra <-- regra_valida_data
+regra <--- regra_passaporte
+regra <-- regra_id_card
+regra <--- regra_permissão_de_acesso
+regra <-- regra_visto_trabalho
+regra <--- regra_autorização_diplomática
+regra <-- regra_criminal
+regra <--- regra_vacinação
+regra <-- regra_nações
+
 Inspetor --> Entrante
-Inspetor --> Regra
 Inspetor --> Boletim
 Inspetor --> Atualização
 
-Entrante o-> Regra
-Entrante o--> Papel
-Regra <|-- RegraPassaporte
-Regra <|-- RegraPermissãoAcesso
-Regra <|-- RegraGarantiaAsilo
+Entrante *---> regra
+Entrante *--> Papel
 
-Atualização <|--- AtualizaçãoNações
-Atualização <|--- AtualizaçãoDocumentos
-Atualização <|--- AtualizaçãoVacinação
-Atualização <|--- AtualizaçãoCriminal
+Atualização <|-- AtualizaçãoNações
+Atualização <|-- AtualizaçãoDocumentos
+Atualização <|-- AtualizaçãoVacinação
+Atualização <|-- AtualizaçãoCriminal
 
 Boletim -> Atualização
 @enduml
