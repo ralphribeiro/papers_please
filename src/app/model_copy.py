@@ -86,3 +86,21 @@ def regra_vacinação_obrigatória(vacinas_exigidas: dict, entrante: Entrante):
         if v not in vacinas_tomadas:
             s = 'Entry denied: missing required {} vaccination.'
             entrante.status.append(s.format(v))
+
+
+def regra_nações_permitidas(nações_permitidas: dict, entrante: Entrante):
+    nação = [
+        p.itens['nation'] for p in entrante.papeis if p.nome == 'passport'
+    ].pop()
+
+    if nação not in nações_permitidas['allow']:
+        s = 'Entry denied: Entrant from {}.'
+        entrante.status.append(s.format(nação))
+
+
+def regra_criminal(procurados: tuple, entrante: Entrante):
+    nome = [
+        p.itens['name'] for p in entrante.papeis if p.nome == 'passport'
+    ].pop()
+    if nome in procurados:
+        entrante.status.append('Detainment: Entrant is a wanted criminal.')
