@@ -4,13 +4,16 @@ import pytest
 
 from src.app.model_copy import (
     Entrante, Papel,
+    regra_autorização_diplomática,
     regra_consistência_documentos,
     regra_criminal,
     regra_id_card_obrigatório,
     regra_nações_permitidas,
     regra_passaporte_obrigatório,
+    regra_permissão_acesso,
     regra_vacinação_obrigatória,
-    regra_valida_data
+    regra_valida_data,
+    regra_visto_trabalho
 )
 
 
@@ -155,6 +158,43 @@ class TestRegras:
         entrante = Entrante(josef, [regra_n])
         entrante.submete_papeis_regras()
         assert entrante.status == ['Detainment: Entrant is a wanted criminal.']
+
+    def test_regra_permissão_de_acesso(self):
+        andrej = {'access_permit': 'NAME: Bennet, Andrej\nNATION: Republia\nID#: QK0U4-WS8W3\nPURPOSE: WORK\nDURATION: 6 MONTHS\nHEIGHT: 153cm\nWEIGHT: 52kg\nEXP: 1986.11.19'}
+        entrante = Entrante(andrej, [regra_permissão_acesso])
+        entrante.submete_papeis_regras()
+        assert entrante.status == []
+
+    def test_regra_permissão_de_acesso_faltante(self):
+        josef = {"passport": 'ID#: GC07D-FU8AR\nNATION: Capela\nNAME: Costanza, Josef\nDOB: 1933.11.28\nSEX: M\nISS: East Grestin\nEXP: 1983.03.15'}
+        entrante = Entrante(josef, [regra_permissão_acesso])
+        entrante.submete_papeis_regras()
+        assert entrante.status == [
+            'Entry denied: missing required access permit.']
+
+    def test_regra_visto_de_trabalho(self):
+        omid = {'work_pass': 'NAME: pearl, omid\nFIELD: healthcare\nEXP: 1981.04.09'}
+        entrante = Entrante(omid, [regra_visto_trabalho])
+        entrante.submete_papeis_regras()
+        assert entrante.status == []
+
+    def test_regra_visto_de_trabalho_faltante(self):
+        josef = {"passport": 'ID#: GC07D-FU8AR\nNATION: Capela\nNAME: Costanza, Josef\nDOB: 1933.11.28\nSEX: M\nISS: East Grestin\nEXP: 1983.03.15'}
+        entrante = Entrante(josef, [regra_visto_trabalho])
+        entrante.submete_papeis_regras()
+        assert entrante.status == ['Entry denied: Workers require work pass.']
+
+    def test_regra_autorização_diplomática(self):
+        pyotr = {'diplomatic_authorization': 'NAME: Hassad, Pyotr\nNATION: Republia\nID: JXD9V-U5OT8\nACCESS: Arstotzka, Antegria, Impor'}
+        entrante = Entrante(pyotr, [regra_autorização_diplomática])
+        entrante.submete_papeis_regras()
+        assert entrante.status == []
+
+    def test_regra_autorização_diplomática_faltante(self):
+        josef = {"passport": 'ID#: GC07D-FU8AR\nNATION: Capela\nNAME: Costanza, Josef\nDOB: 1933.11.28\nSEX: M\nISS: East Grestin\nEXP: 1983.03.15'}
+        entrante = Entrante(josef, [regra_autorização_diplomática])
+        entrante.submete_papeis_regras()
+        assert entrante.status == ['Entry denied: invalid diplomatic authorization.']
 
 
 @pytest.mark.skip('a implementar')

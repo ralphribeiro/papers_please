@@ -104,3 +104,20 @@ def regra_criminal(procurados: tuple, entrante: Entrante):
     ].pop()
     if nome in procurados:
         entrante.status.append('Detainment: Entrant is a wanted criminal.')
+
+
+def regra_permissão_acesso(entrante: Entrante):
+    if 'access_permit' not in [p.nome for p in entrante.papeis]:
+        entrante.status.append('Entry denied: missing required access permit.')
+
+
+def regra_visto_trabalho(entrante: Entrante):
+    if 'work_pass' not in [p.nome for p in entrante.papeis]:
+        entrante.status.append('Entry denied: Workers require work pass.')
+
+
+def regra_autorização_diplomática(entrante: Entrante):
+    if 'diplomatic_authorization' not in [p.nome for p in entrante.papeis]:
+        entrante.status.append(
+            'Entry denied: invalid diplomatic authorization.'
+        )
