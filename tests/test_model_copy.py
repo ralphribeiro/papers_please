@@ -1,9 +1,7 @@
 from functools import partial
 
-import pytest
-
 from src.app.model_copy import (
-    Entrante, Papel,
+    Boletim, Entrante, Papel,
     regra_autorização_diplomática,
     regra_consistência_documentos,
     regra_criminal,
@@ -194,21 +192,24 @@ class TestRegras:
         josef = {"passport": 'ID#: GC07D-FU8AR\nNATION: Capela\nNAME: Costanza, Josef\nDOB: 1933.11.28\nSEX: M\nISS: East Grestin\nEXP: 1983.03.15'}
         entrante = Entrante(josef, [regra_autorização_diplomática])
         entrante.submete_papeis_regras()
-        assert entrante.status == ['Entry denied: invalid diplomatic authorization.']
+        assert entrante.status == [
+            'Entry denied: invalid diplomatic authorization.']
 
 
-@pytest.mark.skip('a implementar')
 class TestAtualização:
     def test_atualização_nações_permite_entrantes(self):
         entrada = 'Allow citizens of Obristan'
-        atualização = AtualizaçãoNações(entrada)
-        assert atualização.permitido == ('Obristan', )
+        boletim = Boletim(entrada)
+        assert boletim.nações_permitidas == ('Obristan', )
 
     def test_atualização_documentos(self):
         ...
 
     def test_atualização_vacinação(self):
-        ...
+        entrada = 'Citizens of Antegria, Republia, Obristan require polio vaccination'
+        boletim = Boletim(entrada)
+        assert boletim.vacinação == (
+            'Antegria', 'Republia', 'Obristan', 'polio')
 
     def test_atualização_criminal(self):
         ...
