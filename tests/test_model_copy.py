@@ -196,20 +196,24 @@ class TestRegras:
             'Entry denied: invalid diplomatic authorization.']
 
 
-class TestAtualização:
-    def test_atualização_nações_permite_entrantes(self):
+class TestBoletim:
+    def test_boletim_nações_permite_entrantes(self):
         entrada = 'Allow citizens of Obristan'
         boletim = Boletim(entrada)
         assert boletim.nações_permitidas == ('Obristan', )
 
-    def test_atualização_documentos(self):
+    def test_boletim_documentos(self):
         ...
 
-    def test_atualização_vacinação(self):
+    def test_boletim_vacinação(self):
         entrada = 'Citizens of Antegria, Republia, Obristan require polio vaccination'
         boletim = Boletim(entrada)
-        assert boletim.vacinação == (
-            'Antegria', 'Republia', 'Obristan', 'polio')
+        assert boletim.vacinação == ''
 
-    def test_atualização_criminal(self):
+    # def test_boletim_vacinação_negação(self):
+    #     entrada = 'Entrants no longer require tetanus vaccination'
+    #     boletim = Boletim(entrada)
+    #     assert boletim.vacinação == ()
+
+    def test_boletim_criminal(self):
         ...

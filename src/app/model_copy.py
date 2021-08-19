@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import date
+from itertools import chain
 import re
 from typing import Callable, Iterable
 
@@ -8,23 +9,24 @@ from typing import Callable, Iterable
 class Boletim:
     raw: str
     nações_permitidas: tuple = field(init=False)
-    vacinação: tuple = field(init=False)
+    vacinação: str = field(init=False)
 
     _NAÇÕES: tuple = field(init=False, default=(
         'Arstotzka', 'Antegria', 'Impor', 'Kolechia',
         'Obristan', 'Republia', 'United Federation'
     ))
 
-    @staticmethod
-    def encontra_padrões(
-        alvo: str, padrão1: Iterable, padrão2: Iterable
+    def _encontra_padrões(
+        self, padrão1: Iterable, padrão2: Iterable = ()
     ) -> tuple:
         ret = ()
-        for t in alvo.split('\n'):
+        for t in self.raw.split('\n'):
             p = re.compile('|'.join(pat for pat in padrão1))
             encontrado = p.search(t)
             if encontrado:
-                p2 = re.compile('|'.join(pat for pat in padrão2))
+                p2 = re.compile(
+                    '|'.join(pat for pat in chain(self._NAÇÕES, padrão2))
+                )
                 encontrado2 = p2.finditer(t)
                 if encontrado2:
                     ret = tuple(r.group() for r in encontrado2)
@@ -32,17 +34,16 @@ class Boletim:
 
     def _nações(self):
         p1 = ('Allow', )
-        self.nações_permitidas = self.encontra_padrões(
-            self.raw, p1, self._NAÇÕES)
+        self.nações_permitidas = self._encontra_padrões(p1)
 
     def _vacinação(self):
-        p1 = ('vaccination', )
-        self._vacinação = self.encontra_padrões(
-            self.raw, p1, 
-        )
+        for t in self.raw.split('\n'):
+            if 'vaccination' in t and 'no longer' not in t:
+                self.vacinação = t
 
     def __post_init__(self):
         self._nações()
+        self._vacinação()
 
 
 @dataclass
