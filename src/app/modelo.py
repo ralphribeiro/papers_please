@@ -4,7 +4,7 @@ from datetime import date
 import re
 from typing import Iterable, Optional
 
-
+ 
 @dataclass
 class Regra(ABC):
     @abstractmethod
